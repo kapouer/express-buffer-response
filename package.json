@@ -1,0 +1,32 @@
+{
+  "name": "express-buffer-response",
+  "version": "1.0.0",
+  "description": "Buffer express response and call back when finished",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kapouer/express-buffer-response.git"
+  },
+  "keywords": [
+    "express",
+    "buffer",
+    "response",
+    "finished"
+  ],
+  "author": "Jérémy Lal <kapouer@melix.org>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kapouer/express-buffer-response/issues"
+  },
+  "dependencies": {
+    "bl": "^0.9.3",
+    "on-finished": "^2.1.1"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "express": "^4.10.4"
+  }
+}
