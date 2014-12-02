@@ -1,6 +1,6 @@
 {
   "name": "express-buffer-response",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Buffer express response and call back when finished",
   "main": "index.js",
   "scripts": {
