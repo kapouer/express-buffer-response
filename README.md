@@ -16,6 +16,7 @@ app.use(function(req, res, next) {
 		// here be cache store logic
 		bl.pipe(fs.createWriteStream('cachefile'));
 	});
+	next();
 });
 ```
 
