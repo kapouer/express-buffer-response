@@ -20,6 +20,9 @@ app.use(function(req, res, next) {
 });
 ```
 
+# Nota bene
+
+Works with express-session since 1.0.3
 
 # License
 

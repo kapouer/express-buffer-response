@@ -2,8 +2,10 @@ var BufferRes = require('../');
 var expect = require('expect.js');
 var fs = require('fs');
 var express = require('express');
+var session = require('express-session')
 var path = require('path');
 var http = require('http');
+
 
 var testFile = path.join(__dirname, 'test.txt');
 var ff = [];
@@ -14,6 +16,12 @@ fs.writeFileSync(testFile, ff);
 
 var app = express();
 
+var sessionMw = session({
+	secret: 'keyboard cat',
+	resave: false,
+	saveUninitialized: true
+});
+
 function cacheMw(req, res, next) {
 	BufferRes(res, function(err, buf) {
 		expect(res.statusCode).to.be(200);
@@ -22,6 +30,9 @@ function cacheMw(req, res, next) {
 		}
 		if (req.url == "/b") {
 			expect(buf.length).to.be(ff.length);
+		}
+		if (req.url == "/c") {
+			expect(buf.toString()).to.be("lujon");
 		}
 	});
 	next();
@@ -39,6 +50,10 @@ app.get('/b', cacheMw, function(req, res, next) {
 	res.sendFile(testFile);
 	count++;
 });
+app.get('/c', sessionMw, cacheMw, function(req, res, next) {
+	res.send("lujon");
+	count++;
+});
 
 var port = app.listen().address().port;
 
@@ -48,12 +63,13 @@ http.get('http://localhost:' + port + '/a');
 http.get('http://localhost:' + port + '/a');
 http.get('http://localhost:' + port + '/b');
 http.get('http://localhost:' + port + '/b');
+http.get('http://localhost:' + port + '/c');
 
 process.on('exit', function() {
 	try {
 		fs.unlinkSync(testFile);
 	} catch(e) {}
 
-	expect(count).to.be(6);
+	expect(count).to.be(7);
 });
 

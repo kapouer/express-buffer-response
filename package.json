@@ -1,6 +1,6 @@
 {
   "name": "express-buffer-response",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Buffer express response and call back when finished",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
-    "express": "^4.10.4"
+    "express": "^4.10.4",
+    "express-session": "^1.9.3"
   }
 }

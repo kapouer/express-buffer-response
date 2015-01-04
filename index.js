@@ -16,6 +16,8 @@ module.exports = function bufferResponse(res, cb) {
 	onFinished(res, function(err) {
 		res.write = write;
 		res.end = end;
+		var len = parseInt(res.get('Content-Length'));
+		if (!isNaN(len)) buf = buf.slice(0, len);
 		cb(err, buf);
 	});
 };
