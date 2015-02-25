@@ -17,7 +17,13 @@ module.exports = function bufferResponse(res, cb) {
 		res.write = write;
 		res.end = end;
 		var len = parseInt(res.get('Content-Length'));
-		if (!isNaN(len)) buf = buf.slice(0, len);
+		if (!isNaN(len)) {
+			buf = buf.slice(0, len);
+		}
+		if (!err && res.req.connection.destroyed) {
+			res.statusCode = 0;
+			buf = null;
+		}
 		cb(err, buf);
 	});
 };
