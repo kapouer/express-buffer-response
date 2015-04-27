@@ -24,15 +24,18 @@ var sessionMw = session({
 
 function cacheMw(req, res, next) {
 	BufferRes(res, function(err, buf) {
-		expect(res.statusCode).to.be(200);
 		if (req.url == '/a') {
+			expect(res.statusCode).to.be(200);
 			expect(buf.toString()).to.be('{"mykey":"myval"}');
-		}
-		if (req.url == "/b") {
+		} else if (req.url == "/b") {
+			expect(res.statusCode).to.be(200);
 			expect(buf.length).to.be(ff.length);
-		}
-		if (req.url == "/c") {
+		} else if (req.url == "/c") {
+			expect(res.statusCode).to.be(200);
 			expect(buf.toString()).to.be("lujon");
+		} else if (req.url == "/d") {
+			expect(res.statusCode).to.be(0);
+			expect(buf).to.be(null);
 		}
 	});
 	next();
@@ -54,6 +57,12 @@ app.get('/c', sessionMw, cacheMw, function(req, res, next) {
 	res.send("lujon");
 	count++;
 });
+app.get('/d', cacheMw, function(req, res, next) {
+	setTimeout(function() {
+		res.send("not received by request");
+		count++;
+	}, 300);
+});
 
 var port = app.listen().address().port;
 
@@ -65,11 +74,18 @@ http.get('http://localhost:' + port + '/b');
 http.get('http://localhost:' + port + '/b');
 http.get('http://localhost:' + port + '/c');
 
+var req = http.get('http://localhost:' + port + '/d').on('error', function(e) {
+	// catch this expected error
+});
+setTimeout(function() {
+	req.abort();
+}, 100);
+
 process.on('exit', function() {
 	try {
 		fs.unlinkSync(testFile);
 	} catch(e) {}
 
-	expect(count).to.be(7);
+	expect(count).to.be(8);
 });
 
