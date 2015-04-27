@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "bl": "^0.9.3",
-    "on-finished": "^2.2.0"
+    "on-finished": "^2.2.1"
   },
   "devDependencies": {
     "expect.js": "^0.3.1",
