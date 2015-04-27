@@ -20,7 +20,7 @@ module.exports = function bufferResponse(res, cb) {
 		if (!isNaN(len)) {
 			buf = buf.slice(0, len);
 		}
-		if (!err && res.req.connection.destroyed) {
+		if (!err && !res.finished && res.req.connection.destroyed) {
 			res.statusCode = 0;
 			buf = null;
 		}
