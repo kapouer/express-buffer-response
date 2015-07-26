@@ -6,11 +6,11 @@ module.exports = function bufferResponse(res, cb) {
 	var end = res.end;
 	var buf = new BufferList();
 	res.write = function(data, enc) {
-		if (data != undefined) bufferAdd(buf, data, enc)
+		if (buf != null && data != undefined) bufferAdd(buf, data, enc)
 		write.bind(res)(data, enc);
 	};
 	res.end = function(data, enc) {
-		if (data != undefined) bufferAdd(buf, data, enc)
+		if (buf != null && data != undefined) bufferAdd(buf, data, enc)
 		end.bind(res)(data, enc);
 	};
 	onFinished(res, function(err) {
