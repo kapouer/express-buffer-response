@@ -14,6 +14,9 @@ module.exports = function bufferResponse(res, cb) {
 		end.bind(res)(data, enc);
 	};
 	onFinished(res, function(err) {
+		// if some other express middleware kept a copy of write/end,
+		// restoration here won't work as expected and our res.write/end
+		// will be called with buf == null
 		res.write = write;
 		res.end = end;
 		var len = parseInt(res.get('Content-Length'));
